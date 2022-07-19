@@ -1,28 +1,35 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <MySearch></MySearch>
+    <MyList :list="list"></MyList>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import MySearch from "./components/BookTop.vue";
+import MyList from "./components/BookList.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    MySearch,
+    MyList,
+  },
+  data() {
+    return {
+      list: [],
+    };
+  },
+  async created() {
+    try {
+      const { data: res } = await this.$axios({
+        url: "/api/getbooks",
+      });
+      this.list = res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
